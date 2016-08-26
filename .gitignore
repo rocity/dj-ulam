@@ -1,5 +1,6 @@
 db.sqlite3 
 ulam/secrets.py
 ulam/__pycache__/
+ulam/__pycache__/*
 __pycache__
 *.pyc

@@ -29,7 +29,7 @@ class NewVisitorTestCase(unittest.TestCase):
         # He notices a field for the ingredients
         recipebox = self.browser.find_element_by_id('id_recipe_ingre')
         self.assertEqual(
-            titlebox.get_attribute('placeholder'),
+            recipebox.get_attribute('placeholder'),
             'An ingredient for your dish?'
             )
 
