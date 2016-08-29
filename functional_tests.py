@@ -1,5 +1,6 @@
 from selenium import webdriver
 import unittest
+import time
 
 class NewVisitorTestCase(unittest.TestCase):
     def setUp(self):
@@ -41,15 +42,12 @@ class NewVisitorTestCase(unittest.TestCase):
         submitbutton = self.browser.find_element_by_id('id_submit_recipe')
         submitbutton.click()
 
-        table = self.browser.find_element_by_id('id_recipe_table')
-        rows = table.find_element_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == 'Apple Pie' for row in rows)
-            )
+        time.sleep(10)
 
-        self.assertTrue(
-            any(row.text == 'Lemon Juice' for row in rows)
-            )
+        table = self.browser.find_element_by_id('id_recipe_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('Apple Pie', [row.text for row in rows])
+        self.assertIn('Lemon Juice', [row.text for row in rows])
 
         # There is still a text box inviting him to add another ingredient.
         # He enters "Sliced Apples"

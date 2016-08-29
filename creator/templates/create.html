@@ -4,17 +4,29 @@
     </head>
     <body>
         <h1>Create a Recipe</h1>
-        <input
-            type="text"
-            id="id_recipe_title"
-            placeholder="What is your dish called?">
-        <br />
-        <input
-            type="text"
-            id="id_recipe_ingre"
-            placeholder="An ingredient for your dish?">
+        <form method="post">
+            {% csrf_token %}
+            <input
+                type="text"
+                id="id_recipe_title"
+                name="title_text"
+                placeholder="What is your dish called?">
+            <br />
+            <input
+                type="text"
+                id="id_recipe_ingre"
+                placeholder="An ingredient for your dish?">
 
-        <br />
-        <button id="id_submit_recipe" type="submit">Submit</button>
+            <br />
+            <button id="id_submit_recipe" type="submit">Submit</button>
+        </form>
+        <hr>
+        <table id="id_recipe_table">
+            <tr>
+                <th>
+                    {{ title_text }}
+                </th>
+            </tr>
+        </table>
     </body>
 </html>
