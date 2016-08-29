@@ -5,10 +5,27 @@ from django.template.loader import render_to_string
 
 from creator.views import home_page
 
+from creator.models import Recipe
+
 TITLE_TEXT = 'A new recipe'
 INGREDIENT_TEXT = 'one ingredient'
 
 # Create your tests here.
+
+class ItemModelTestCase(TestCase):
+    def test_saving_and_retrieving_recipes(self):
+        first_recipe = Recipe()
+        first_recipe.title = 'Banana Pop'
+        first_recipe.ingredient = 'Ice'
+        first_recipe.save()
+
+        saved_recipes = Recipe.objects.all()
+        self.assertEqual(saved_recipes.count(), 1)
+
+        first_saved_recipe = saved_recipes[0]
+        self.assertEqual(first_saved_recipe.title, 'Banana Pop')
+        self.assertEqual(first_saved_recipe.ingredient, 'Ice')
+
 class HomePageTestCase(TestCase):
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')
