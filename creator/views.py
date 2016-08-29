@@ -5,5 +5,6 @@ from django.http import HttpResponse
 def home_page(request):
 
     return render(request, 'create.html', {
-        'title_text': request.POST.get('title_text', '')
+        'title_text': request.POST.get('title_text', ''),
+        'ingredient_text': request.POST.get('ingredient_text', '')
         })

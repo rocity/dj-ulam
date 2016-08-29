@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from creator.views import home_page
 
 TITLE_TEXT = 'A new recipe'
+INGREDIENT_TEXT = 'one ingredient'
 
 # Create your tests here.
 class HomePageTestCase(TestCase):
@@ -24,12 +25,14 @@ class HomePageTestCase(TestCase):
         request = HttpRequest()
         request.method = 'POST'
         request.POST['title_text'] = TITLE_TEXT
+        request.POST['ingredient_text'] = INGREDIENT_TEXT
 
         response = home_page(request)
         self.assertIn(TITLE_TEXT, response.content.decode())
+        self.assertIn(INGREDIENT_TEXT, response.content.decode())
 
         expected_html = render_to_string(
             'create.html',
-            {'title_text': TITLE_TEXT}
+            {'title_text': TITLE_TEXT, 'ingredient_text': INGREDIENT_TEXT}
             )
         self.assertEqual(response.content.decode(), expected_html)
