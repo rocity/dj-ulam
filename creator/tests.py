@@ -12,7 +12,7 @@ INGREDIENT_TEXT = 'one ingredient'
 
 # Create your tests here.
 
-class ItemModelTestCase(TestCase):
+class RecipeModelTestCase(TestCase):
     def test_saving_and_retrieving_recipes(self):
         first_recipe = Recipe()
         first_recipe.title = 'Banana Pop'
@@ -50,8 +50,18 @@ class HomePageTestCase(TestCase):
         new_recipe = Recipe.objects.first()
         self.assertEqual(new_recipe.title, TITLE_TEXT)
 
+    def test_home_page_redirects_after_POST(self):
+        return HttpRequest()
+        request.method = 'POST'
+        request.POST['title_text'] = TITLE_TEXT
+        request.POST['ingredient_text'] = INGREDIENT_TEXT
+
+        response = home_page(request)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/')
+
+    # TODO: create a test that will show an error if the user did not submit a
+    # recipe
 
     def test_home_page_only_saves_items_when_necessary(self):
         request = HttpRequest()
