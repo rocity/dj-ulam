@@ -45,11 +45,15 @@ class HomePageTestCase(TestCase):
         request.POST['ingredient_text'] = INGREDIENT_TEXT
 
         response = home_page(request)
-        self.assertIn(TITLE_TEXT, response.content.decode())
-        self.assertIn(INGREDIENT_TEXT, response.content.decode())
 
-        expected_html = render_to_string(
-            'create.html',
-            {'title_text': TITLE_TEXT, 'ingredient_text': INGREDIENT_TEXT}
-            )
-        self.assertEqual(response.content.decode(), expected_html)
+        self.assertEqual(Recipe.objects.count(), 1)
+        new_recipe = Recipe.objects.first()
+        self.assertEqual(new_recipe.title, TITLE_TEXT)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
+
+    def test_home_page_only_saves_items_when_necessary(self):
+        request = HttpRequest()
+        home_page(request)
+        self.assertEqual(Recipe.objects.count(), 0)
