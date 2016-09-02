@@ -1,8 +1,9 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
-import unittest
+from selenium.webdriver.common.keys import Keys
 import time
 
-class NewVisitorTestCase(unittest.TestCase):
+class NewVisitorTestCase(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
 
@@ -17,7 +18,7 @@ class NewVisitorTestCase(unittest.TestCase):
     def test_can_start_a_recipe_and_retrieve_it_later(self):
         # Clyde has heard about a cool new online app where you can get random dishes
         # to try and cook. He goes to check out its homepage
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # He notices the page title mention Ulam
         self.assertIn('Ulam', self.browser.title)
@@ -64,6 +65,3 @@ class NewVisitorTestCase(unittest.TestCase):
         # He visits the URL and his recipe is still there
 
         # Satisfied, he goes back to sleep
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
