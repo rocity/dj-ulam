@@ -23,14 +23,18 @@
         </form>
         <hr>
         <table id="id_recipe_table">
-            <tr>
-                <th>
-                    {{ title_text }}
-                </th>
-            </tr>
-            <tr>
-                <td>{{ ingredient_text }}</td>
-            </tr>
+            {% for recipe in recipes %}
+                <tr>
+                    <td>
+                        {{ recipe.title }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ recipe.ingredient }}
+                    </td>
+                </tr>
+            {% endfor %}
         </table>
     </body>
 </html>

@@ -6,6 +6,8 @@ from .models import Recipe
 # Create your views here.
 def home_page(request):
 
+    recipes = Recipe.objects.all()
+
     if request.method == 'POST':
         new_recipe_title = request.POST['title_text']
         new_recipe_ingredient = request.POST['ingredient_text']
@@ -15,4 +17,5 @@ def home_page(request):
             )
         return redirect('/')
 
-    return render(request, 'create.html')
+
+    return render(request, 'create.html', {'recipes': recipes})

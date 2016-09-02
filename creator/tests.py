@@ -60,7 +60,20 @@ class HomePageTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/')
 
-    # TODO: create a test that will show an error if the user did not submit a
+    # TODO #1: create a test to display all items on a table (homepage)
+    def test_home_page_displays_all_recipes(self):
+        Recipe.objects.create(title='Recipe 1', ingredient='Ingre 1')
+        Recipe.objects.create(title='Recipe 2', ingredient='Ingre 2')
+
+        request = HttpRequest()
+        response = home_page(request)
+
+        self.assertIn('Recipe 1', response.content.decode())
+        self.assertIn('Recipe 2', response.content.decode())
+        self.assertIn('Ingre 1', response.content.decode())
+        self.assertIn('Ingre 2', response.content.decode())
+
+    # TODO #2: create a test that will show an error if the user did not submit a
     # recipe
 
     def test_home_page_only_saves_items_when_necessary(self):
