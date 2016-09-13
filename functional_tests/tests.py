@@ -43,25 +43,50 @@ class NewVisitorTestCase(LiveServerTestCase):
         # He types an ingredient
         recipebox.send_keys('Lemon Juice')
 
-        # When he clicks the Submit button, the page updates, and now the page
-        # displays "Apple Pie" as a dish, and "Lemon Juice" as its recipe
+        # When he hits enter, he is taken to a new URL,
+        # and now the page lists: Apple Pie, Lemon Juice as an item in a
+        # recipe table
         submitbutton = self.browser.find_element_by_id('id_submit_recipe')
         submitbutton.click()
 
         time.sleep(10)
+        clyde_recipe_url = self.browser.current_url
+        self.assertRegex(clyde_recipe_url, '/recipes/.+')
 
-        table = self.browser.find_element_by_id('id_recipe_table')
-        rows = table.find_elements_by_tag_name('tr')
+        # The page updates again, and now shows both items on his recipe
         self.check_for_row_in_table('Apple Pie')
         self.check_for_row_in_table('Lemon Juice')
 
-        # There is still a text box inviting him to add another ingredient.
-        # He enters "Sliced Apples"
-        self.fail('Finish the test!')
+        # Now a new user, Clynt, comes along to the site.
 
-        # Clyde wonders if the site will remember his recipe. Then he sees
-        # that the site has generated a unique URL for him
+        ## We use a new browser session to make sure that no info
+        ## of Clyde's is coming through from cookies etc#
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
 
-        # He visits the URL and his recipe is still there
+        # Clynt visits the home page. There is no sign of Clyde's recipe
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_elements_by_tag_name('body').text
+        self.assertNotIn('Apple Pie', page_text)
+        self.assertNotIn('Lemon', page_text)
+
+        # Clynt starts a new recipe by entering a new item. He is
+        # less interesting than Clyde...
+        inputbox = self.browser.find_element_by_id('id_recipe_title');
+        inputbox.send_keys('Clementine Cake')
+
+        submitbutton = self.browser.find_element_by_id('id_submit_recipe')
+        submitbutton.click()
+
+        # Clynt gets his own unique URL
+        clynt_recipe_url = self.browser.current_url
+        self.assertRegex(clynt_recipe_url, '/recipes/.+')
+        self.assertNotEqual(clynt_recipe_url, clyde_recipe_url)
+
+        # Again, there is no trace of Clyde's list
+        page_text = self.browser.find_elements_by_tag_name('body').text
+        self.assertNotIn('Apple Pie', page_text)
+        self.assertIn('Clementine Cake', page_text)
 
         # Satisfied, he goes back to sleep
+        self.fail('Finish the test!')
